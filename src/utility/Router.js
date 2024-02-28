@@ -1,28 +1,33 @@
-import Home from "../js/components/Home";
-import MainGamePage from "../js/components/MainGamePage";
-
-export const routes = [
-    { path: /^\/$/, element: Home},
-    { path: /^\/main$/, element: MainGamePage}
-]
+import { routes } from "./routesInfo";
 
 function Router($container) {
-    this.$container = container;
+    this.$container = $container;
+    let currentPage;
 
+    console.log(this.$container);
     const findMatchedRoute = () => {
-        routes.find((route) => route.path.test(location.pathname));
+        /* console.log("패스네임 : "+location.pathname); */
+        const res = routes.find((route) => route.path.test(location.pathname));
+        return res.element();
+
     }
     
     const route = () => {
-        findMatchedRoute().element();
+        findMatchedRoute();
     }
 
     const init = () => {
-        window.addEventListener("hisotrychange", ({ detail }) => {
+        console.log("이닛");
+        window.addEventListener("historychange", ({ detail }) => {
             const { to, isReplace } = detail;
-
-            (isReplace || to === location.pathname ) ? history.replaceState(null, "", to) : history.puashState(null, "", to);
-
+            console.log("히스토리체인지");
+            console.log(detail);
+            if(isReplace || to === location.pathname ) {
+                history.replaceState(null, "", to)
+            }
+            else { 
+                history.pushState(null, "", to)
+            } 
             route();
         });
 

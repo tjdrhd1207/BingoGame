@@ -1,6 +1,7 @@
 import '../../../public/assets/style.css';
 
 function MainGamePage($container) {
+    console.log($container);
     this.$container = $container;
 
     this.setState = () => {

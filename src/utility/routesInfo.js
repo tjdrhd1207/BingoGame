@@ -3,7 +3,9 @@ import MainGamePage from "../js/components/MainGamePage";
 
 const BASE_URL_ = "http://localhost:5173";
 
+const $ = (elementName) => document.querySelector(elementName);
+
 export const routes = [
-    { path: /^\/$/, element: Home},
-    { path: /^\/main$/, element: MainGamePage}
+    { path: /^\/$/, element: () => new Home($("#app"))},
+    { path: /^\/main$/, element: () => new MainGamePage($("#app"))}
 ]

@@ -1,10 +1,9 @@
-import bingoLogo from '../../../public/img/bingo.svg'
-import MainGamePage from './MainGamePage'
+import bingoLogo from '../../../public/img/bingo.svg';
 import { navigate } from '../../utility/naviagte';
-/* import Router from '../../utility/router'; */
+import Router from '../../utility/router';
 
 function Home($container) {
-    console.log($container);
+    console.log("1번");
     this.$container = $container;
 
     this.setState = () => {
@@ -29,13 +28,16 @@ function Home($container) {
     btn.addEventListener("click", (e) => {
         const target = e.target.closest("a");
         if(!(target instanceof HTMLAnchorElement)) return;
-        console.log(target);
         e.preventDefault();
+        
         const targetURL = target.href;
-        console.log(targetURL);
+        
         navigate(targetURL);
-
-    })
+        console.log(targetURL);
+        new Router(this.$container);
+    });
+        
+    
 }
 
 export default Home;
