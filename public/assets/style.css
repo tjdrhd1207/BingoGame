@@ -103,7 +103,7 @@ button:focus-visible {
   align-items: center;
 }
 
-#wordBox {
+.word {
   width : 80px;
   height : 80px;
   border:#1a1a1a;
@@ -111,15 +111,21 @@ button:focus-visible {
   background-color: #747bff;
   border-radius: 10px;
   margin: 5px; /* 단어 상자 간의 간격 */
+  transition: background-color 1.0s linear;
 }
 
-#wordBox3 {
+.filled-word {
   width : 80px;
   height : 80px;
-  background-color: #888;
+  background-color: rosybrown;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
 }
 
-#rowContainer {
+.rowContainer {
   display: flex;
   flex-direction: row;
 }

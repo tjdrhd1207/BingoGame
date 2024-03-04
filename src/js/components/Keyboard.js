@@ -1,11 +1,7 @@
 
-class Keyboard {
-    constructor() {
-        this.clickKeyboard();
-    }
+function Keyboard() {
 
-    template() {
-        return `
+        this.innerHTML = `
             <div id="keyboard-container">
                 <div id="first-row">
                     <button class="keyboard-btn">Q</button>
@@ -31,6 +27,7 @@ class Keyboard {
                     <button class="keyboard-btn">L</button>
                 </div>
                 <div id="third-row">
+                    <button class="keyboard-btn enter">Enter</button>
                     <button class="keyboard-btn">Z</button>
                     <button class="keyboard-btn">X</button>
                     <button class="keyboard-btn">C</button>
@@ -38,21 +35,20 @@ class Keyboard {
                     <button class="keyboard-btn">B</button>
                     <button class="keyboard-btn">N</button>
                     <button class="keyboard-btn">M</button>
-                    <button id="keyboard">M</button>
+                    <button class="keyboard-btn enterBingo backspace">Backspace</button>
                 </div>
             </div>
         `
-    }
-    clickKeyboard() {   
-        console.log("키보드 크릭");
-        const keyBtns = document.querySelectorAll(".keyboard-btn");
-        console.log(keyBtns);
-        keyBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                console.log("헬로");
+
+    /* 콜백 함수 parameter */
+    this.clickEvent = function(callback) {
+        const btns = document.querySelectorAll(".keyboard-btn");
+        btns.forEach(btn => {
+            btn.addEventListener("click", (e)=> {
+                callback(e.target.innerHTML);
             });
-        });
-    }
+        })
+    };
 }
 
 export default Keyboard;
