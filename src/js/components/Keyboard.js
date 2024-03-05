@@ -49,6 +49,15 @@ function Keyboard() {
             });
         })
     };
+
+    this.keydownEvent = function(callback) {
+        document.addEventListener("keydown", (e) => {
+            const keyValue = e.key;
+            if(e.key !== "Alt" && e.key !== "Control"){
+                callback(keyValue);
+            }
+        });
+    }
 }
 
 export default Keyboard;
