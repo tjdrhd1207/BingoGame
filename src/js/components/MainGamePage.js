@@ -154,6 +154,7 @@ function MainGamePage($container) {
         } */
     }
 
+    
     this.deleteLetter = () => {
         console.log(nextLetter);
             let rowInput = document.getElementsByClassName("rowContainer")[NUMBER_OF_ROW - rowRemaining];
