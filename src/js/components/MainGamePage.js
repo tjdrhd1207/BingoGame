@@ -1,6 +1,7 @@
 import '../../../public/assets/style.css';
 import Keyboard from './Keyboard';
 import axios from 'axios';
+import { WORDS } from '../words';
 
 function MainGamePage($container) {
     this.$container = $container;
@@ -9,7 +10,8 @@ function MainGamePage($container) {
     let rowRemaining = NUMBER_OF_ROW;
     let nextLetter = 0; //다음 단어
     let inputLineWord = [];
-
+    let correctWord = WORDS[Math.floor(Math.random() * WORDS.length )];
+    console.log("정답 : "+correctWord);
     const keyboard = new Keyboard();
 
     this.setState = () => {
@@ -28,6 +30,8 @@ function MainGamePage($container) {
         keyboard.keydownEvent((value) => {
             inputValue = value;
             inputValue = inputValue.toUpperCase();
+            const keydowBtn = document.getElementById(inputValue);
+            keydowBtn.classList.add("keydownStyle");
 
             if(inputValue !== "BACKSPACE" && inputValue !== "ENTER" && nextLetter < WORD_LEN) {
                 this.insertLetter(inputValue);
@@ -36,7 +40,11 @@ function MainGamePage($container) {
             } else if (inputValue === "ENTER") {
                 this.checkWord();
             }
-        })
+
+            setTimeout(()=>{
+                keydowBtn.classList.remove("keydownStyle")
+            }, 300);
+        });
 
     };
 
@@ -199,7 +207,7 @@ function MainGamePage($container) {
             axios.get(config.baseURL, params, config.headers).then((res)=> {
                 console.log(res);
                 if(res.status === 200) {
-
+                    this.countToCorrect();
                 }
             }).catch((error) => {
                 if(error.response && error.response.status === 404) {
@@ -207,6 +215,28 @@ function MainGamePage($container) {
                 }
             });            
         }
+    }
+
+    this.countToCorrect = () => {
+        console.log("ㅇㅇㅇ");
+        inputLineWord.forEach((value, index)=> {
+            console.log(correctWord);
+            const cWord = correctWord.find((value, index)=> index);
+            console.log("같은 결과 : "+cWord);
+            let rowInput = document.getElementsByClassName("rowContainer")[NUMBER_OF_ROW - rowRemaining];
+            let box = rowInput.children[index];
+            if(correctWord.includes(value)) {
+                if(correctWord[index] === inputLineWord[index]) {
+                    console.log("정답 : "+box);
+
+                    box.classList.add("bingo");
+                } else {
+                    console.log("반만 정답 : "+box);
+
+                    box.classList.add("half-bingo");
+                }
+            }
+        })
     }
 
     this.setState();

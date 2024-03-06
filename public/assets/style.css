@@ -134,3 +134,15 @@ button:focus-visible {
   background-color: darkgray;
   margin : 3px;
 }
+
+.keydownStyle{
+  opacity: 0.3;
+}
+
+.bingo {
+  background-color: green;
+}
+
+.half-bingo {
+  background-color: #888;
+}
