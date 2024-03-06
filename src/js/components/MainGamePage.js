@@ -12,6 +12,7 @@ function MainGamePage($container) {
     let inputLineWord = [];
     let correctWord = WORDS[Math.floor(Math.random() * WORDS.length )];
     console.log("정답 : "+correctWord);
+
     const keyboard = new Keyboard();
 
     this.setState = () => {
@@ -45,7 +46,6 @@ function MainGamePage($container) {
                 keydowBtn.classList.remove("keydownStyle")
             }, 300);
         });
-
     };
 
     
@@ -161,7 +161,6 @@ function MainGamePage($container) {
             nextLetter = 0;
         } */
     }
-
     
     this.deleteLetter = () => {
         console.log(nextLetter);
