@@ -7,21 +7,21 @@ function MainGamePage($container) {
     this.$container = $container;
     const NUMBER_OF_ROW = 5;
     const WORD_LEN = 5;
+    const STRIKE = "strike";
     let rowRemaining = NUMBER_OF_ROW;
     let nextLetter = 0; //다음 단어
     let inputLineWord = [];
-    let correctWord = WORDS[Math.floor(Math.random() * WORDS.length )];
-    console.log("정답 : "+correctWord);
+    let correctWord = WORDS[Math.floor(Math.random() * WORDS.length )].toUpperCase();
+    let CORRECT_COUNT = 0;
 
     const keyboard = new Keyboard();
 
     this.setState = () => {
         this.render();
         const root = document.getElementById("main");
-
         root.innerHTML += keyboard.innerHTML;
+
         /* 콜백함수 호출 */
-        
         let inputValue = "";
         keyboard.clickEvent((value) => {
             inputValue = value;
@@ -31,8 +31,8 @@ function MainGamePage($container) {
         keyboard.keydownEvent((value) => {
             inputValue = value;
             inputValue = inputValue.toUpperCase();
-            const keydowBtn = document.getElementById(inputValue);
-            keydowBtn.classList.add("keydownStyle");
+            const keydownBtn = document.getElementById(inputValue);
+            keydownBtn.classList.add("keydownStyle");
 
             if(inputValue !== "BACKSPACE" && inputValue !== "ENTER" && nextLetter < WORD_LEN) {
                 this.insertLetter(inputValue);
@@ -43,12 +43,10 @@ function MainGamePage($container) {
             }
 
             setTimeout(()=>{
-                keydowBtn.classList.remove("keydownStyle")
+                keydownBtn.classList.remove("keydownStyle")
             }, 300);
         });
     };
-
-    
 
     this.render = () => {
         this.$container.innerHTML = `
@@ -156,10 +154,6 @@ function MainGamePage($container) {
         
         nextLetter += 1;
         
-        /* if(nextLetter == 5) {
-            rowRemaining-=1;
-            nextLetter = 0;
-        } */
     }
     
     this.deleteLetter = () => {
@@ -183,9 +177,7 @@ function MainGamePage($container) {
         if(nextLetter < WORD_LEN) {
             alert("글 채우세요");
         } else {
-            console.log(inputLineWord);
             const joinWord = inputLineWord.join('');
-            console.log(joinWord);
             const params = {
          
             };
@@ -206,6 +198,7 @@ function MainGamePage($container) {
             axios.get(config.baseURL, params, config.headers).then((res)=> {
                 console.log(res);
                 if(res.status === 200) {
+                    CORRECT_COUNT = 0;
                     this.countToCorrect();
                 }
             }).catch((error) => {
@@ -217,30 +210,48 @@ function MainGamePage($container) {
     }
 
     this.countToCorrect = () => {
-        console.log("ㅇㅇㅇ");
+        const cWord = correctWord.split('');
+        let rowInput = document.getElementsByClassName("rowContainer")[NUMBER_OF_ROW - rowRemaining];
+
         inputLineWord.forEach((value, index)=> {
-            console.log(correctWord);
-            const cWord = correctWord.find((value, index)=> index);
-            console.log("같은 결과 : "+cWord);
-            let rowInput = document.getElementsByClassName("rowContainer")[NUMBER_OF_ROW - rowRemaining];
             let box = rowInput.children[index];
-            if(correctWord.includes(value)) {
-                if(correctWord[index] === inputLineWord[index]) {
-                    console.log("정답 : "+box);
-
-                    box.classList.add("bingo");
-                } else {
-                    console.log("반만 정답 : "+box);
-
-                    box.classList.add("half-bingo");
-                }
+            if(cWord.includes(value)){
+                inputLineWord[index] === cWord[index] ? checkCorrect(box, "strike") : checkCorrect(box, "ball");
+            } else {
+                checkCorrect(box, "out");
             }
-        })
+        });
+
+        /* 초기화 */
+        rowRemaining-=1;
+        nextLetter=0;
+        inputLineWord = [];
     }
+    
+    const checkCorrect = async(box, type) => {
+        const boxTag = box;
+        await boxTag.classList.add(type);
+        if(type === STRIKE) {
+            CORRECT_COUNT+=1;
+            if(CORRECT_COUNT === WORD_LEN) {
+                const modal = document.createElement("div");
+                modal.textContent = "정답입니다.";
+                modal.style.position = "fixed";
+                modal.style.top = "50%";
+                modal.style.left = "50%";
+                modal.style.transform = "translate(-50%, -50%)";
+                modal.style.backgroundColor = "white";
+                modal.style.padding = "20px";
+                document.body.appendChild(modal);
+
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 1000);
+            }
+        }
+    };
 
     this.setState();
 }
-
-
 
 export default MainGamePage;

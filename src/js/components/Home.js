@@ -23,21 +23,23 @@ function Home($container) {
     };
 
     this.render();
-    const btn = document.getElementById("joinBtn");
-    
-    btn.addEventListener("click", (e) => {
-        const target = e.target.closest("a");
-        if(!(target instanceof HTMLAnchorElement)) return;
-        e.preventDefault();
+
+    const init = () => {
+        const btn = document.getElementById("joinBtn");
         
-        const targetURL = target.href;
-        
-        navigate(targetURL);
-        console.log(targetURL);
+            btn.addEventListener("click", (e) => {
+            const target = e.target.closest("a");
+            if(!(target instanceof HTMLAnchorElement)) return;
+            e.preventDefault();
+            
+            const targetURL = target.href;
+            
+            navigate(targetURL);
+            console.log(targetURL);
+        });
         new Router(this.$container);
-    });
-        
-    
+    }
+    init();
 }
 
 export default Home;
